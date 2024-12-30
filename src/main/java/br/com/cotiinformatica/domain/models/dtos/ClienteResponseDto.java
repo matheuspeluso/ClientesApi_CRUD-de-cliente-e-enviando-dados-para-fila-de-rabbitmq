@@ -11,7 +11,7 @@ public class ClienteResponseDto {
 	private UUID id;
 	private String nome;
 	private String email;
-	private String dataNascimento;
 	private String cpf;
+	private String dataNascimento;
 	private List <EnderecoResponseDto> enderecos;
 }
