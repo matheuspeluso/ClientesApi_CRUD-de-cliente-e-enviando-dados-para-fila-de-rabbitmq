@@ -17,8 +17,6 @@ import lombok.Data;
 @Data
 public class ClientePutRequestDto {
 	
-	private UUID id;
-	
 	@NotBlank(message = "Por favor, informe o nome do cliente")
 	@Size(min = 8, max = 150, message = "O nome do cliente deve ter de 8 a 150 caracteres.")
 	private String nome;
@@ -39,6 +37,5 @@ public class ClientePutRequestDto {
 	 @DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date dataNascimento;
 	 
-	 private EnderecoRequestDto endereco;
 
 }

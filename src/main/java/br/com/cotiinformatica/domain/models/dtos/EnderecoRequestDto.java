@@ -24,6 +24,10 @@ public class EnderecoRequestDto {
 	@NotBlank(message = "Por favor, informe o bairro do cliente.")
 	@Size(min = 3, max = 100, message = "O bairro deve ter entre 3 e 100 caracteres.")
 	private String bairro;
+	
+	@NotBlank(message = "Por favor, informe a cidade do cliente.")
+	@Size(min = 3, max = 100, message = "A cidade deve ter entre 3 e 100 caracteres.")
+	private String cidade;
 
 	
 	@NotBlank(message = "Por favor, informe a UF.")

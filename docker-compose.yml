@@ -1,0 +1,47 @@
+version: "3.9"
+services:
+  clientes-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: clientes-api
+    ports:
+      - "9000:9000"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://clientes-postgres:5432/db_apiClientesPFinal
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: coti
+      SPRING_RABBITMQ_HOST: clientes-rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
+      SPRING_RABBITMQ_VIRTUAL_HOST: /
+    depends_on:
+      - clientes-postgres
+      - clientes-rabbitmq
+
+  clientes-postgres:
+    image: postgres:15
+    container_name: clientes-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: db_apiClientesPFinal
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: coti
+    volumes:
+      - clientes_postgres_data:/var/lib/postgresql/data
+
+  clientes-rabbitmq:
+    image: rabbitmq:3-management
+    container_name: clientes-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672" # Porta para gerenciamento
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+      RABBITMQ_DEFAULT_VHOST: /
+
+volumes:
+  clientes_postgres_data:
