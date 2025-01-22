@@ -1,5 +1,6 @@
 package br.com.cotiinformatica.domain.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,6 +11,7 @@ import br.com.cotiinformatica.domain.contracts.services.ClienteServices;
 import br.com.cotiinformatica.domain.models.dtos.ClientePutRequestDto;
 import br.com.cotiinformatica.domain.models.dtos.ClienteRequestDto;
 import br.com.cotiinformatica.domain.models.dtos.ClienteResponseDto;
+import br.com.cotiinformatica.domain.models.dtos.EnderecoResponseDto;
 import br.com.cotiinformatica.domain.models.entities.Cliente;
 import br.com.cotiinformatica.domain.models.entities.Endereco;
 import br.com.cotiinformatica.infrastructure.repositories.ClienteRepository;
@@ -63,14 +65,30 @@ public class ClienteServiceImpl implements ClienteServices{
 
 	@Override
 	public ClienteResponseDto excluirCliente(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		var cliente = clienteRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+		
+		clienteRepository.delete(cliente);
+		return toResponse(cliente);
 	}
 
 	@Override
 	public List<ClienteResponseDto> buscarTodosClientes() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		var clientes = clienteRepository.findAll();
+		
+		if (clientes.isEmpty()) {
+			throw new IllegalArgumentException("Nenhum cliente encontrado");
+		}
+		
+		List<ClienteResponseDto> resposta = new ArrayList<>();
+		
+		for (Cliente cliente : clientes) {
+			resposta.add(toResponse(cliente));
+		}
+		
+		return resposta;
 	}
 
 	@Override
@@ -103,10 +121,25 @@ public class ClienteServiceImpl implements ClienteServices{
 		response.setCpf(cliente.getCpf());
 		response.setEmail(cliente.getEmail());
 		response.setDataNascimento(cliente.getDataNascimento().toString());
-		response.setEnderecos(cliente.getEnderecos());
-		
-		return response;
-		
+		var enderecos = cliente.getEnderecos().stream().map(this::toEnderecoResponse).toList();
+	    response.setEnderecos(enderecos);
+	    
+	    return response;
+	}
+
+	private EnderecoResponseDto toEnderecoResponse(Endereco endereco) {
+	    var response = new EnderecoResponseDto();
+	    
+	    response.setId(endereco.getId());
+	    response.setLogradouro(endereco.getLogradouro());
+	    response.setComplemento(endereco.getComplemento());
+	    response.setNumero(endereco.getNumero());
+	    response.setBairro(endereco.getBairro());
+	    response.setCidade(endereco.getCidade());
+	    response.setUf(endereco.getUf());
+	    response.setCep(endereco.getCep());
+	    
+	    return response;
 	}
 	
 	// Novo método utilitário para adicionar um endereço ao cliente

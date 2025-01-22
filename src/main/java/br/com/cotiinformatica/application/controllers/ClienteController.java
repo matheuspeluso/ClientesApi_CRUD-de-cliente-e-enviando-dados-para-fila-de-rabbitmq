@@ -1,8 +1,11 @@
 package br.com.cotiinformatica.application.controllers;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -33,5 +36,19 @@ public class ClienteController {
 		
 		return clienteServices.alterarCliente(dto, id);
 	}
+	
+	@DeleteMapping("/excluir/{id}")
+	public ClienteResponseDto excluirCliente(@PathVariable UUID id) {
+
+		return clienteServices.excluirCliente(id);
+	}
+	
+	@GetMapping("/consultar")
+	public List<ClienteResponseDto> consultarClientes() {
+
+		return clienteServices.buscarTodosClientes();
+	}
+	
+	
 	
 }
