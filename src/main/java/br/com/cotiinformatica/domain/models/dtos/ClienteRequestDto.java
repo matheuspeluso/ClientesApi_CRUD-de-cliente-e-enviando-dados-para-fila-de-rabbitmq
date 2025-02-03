@@ -17,7 +17,7 @@ import lombok.Data;
 public class ClienteRequestDto {
 	
 	@NotBlank(message = "Por favor, informe o nome do cliente")
-	@Size(min = 8, max = 150, message = "O nome do cliente deve ter de 8 a 150 caracteres.")
+	@Size(min = 8, max = 100, message = "O nome do cliente deve ter de 8 a 100 caracteres.")
 	private String nome;
 	
 	@Email(message = "Por favor, informe um endereço de email válido.")

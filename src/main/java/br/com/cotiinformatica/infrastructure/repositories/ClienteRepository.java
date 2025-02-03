@@ -22,6 +22,13 @@ public interface ClienteRepository extends JpaRepository <Cliente, UUID>{
 	@Query("SELECT c FROM Cliente c JOIN FETCH c.enderecos e WHERE c.id = :id")
 	Optional<Cliente> findClienteComEnderecosById(@Param("id") UUID id);
 
+	//consulta para verificar se um CPF já está cadastrado para outro id que não seja o id informado
+	@Query("SELECT COUNT(c) > 0 FROM Cliente c WHERE c.cpf = :cpf AND c.id <> :id")
+	boolean existsByCpf(@Param("cpf") String cpf, @Param("id") UUID id);
+	
+	//consulta para verificar se um CPF já está cadastrado
+	@Query("SELECT COUNT(c) > 0 FROM Cliente c WHERE c.cpf = :cpf")
+	boolean VerificaCpfCadastrado(@Param("cpf") String cpf);
 
 
 }

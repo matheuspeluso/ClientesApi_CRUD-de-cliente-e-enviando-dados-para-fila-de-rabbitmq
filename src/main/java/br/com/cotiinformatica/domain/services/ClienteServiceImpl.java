@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.cotiinformatica.domain.contracts.components.EmailMessage;
 import br.com.cotiinformatica.domain.contracts.services.ClienteServices;
 import br.com.cotiinformatica.domain.models.dtos.ClientePutRequestDto;
 import br.com.cotiinformatica.domain.models.dtos.ClienteRequestDto;
@@ -25,11 +26,20 @@ public class ClienteServiceImpl implements ClienteServices{
 	
 	@Autowired 
 	EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	EmailMessage emailMessage;
+	
 
 	@Override
 	public ClienteResponseDto cadastroCliente(ClienteRequestDto request) {
 		
 		var endereco = enderecoConvert(request); // Convertendo o DTO de endereço em entidade Endereço
+		
+		//verificando se o cpf já está cadastrado
+		if (clienteRepository.VerificaCpfCadastrado(request.getCpf())) {
+			throw new IllegalArgumentException("O CPF informado já está cadastrado");
+		}
 		
 		var cliente = new Cliente();
 		cliente.setId(UUID.randomUUID());
@@ -44,7 +54,11 @@ public class ClienteServiceImpl implements ClienteServices{
 		//salvando o cliente (os endereços serão salvos juntamente com o cliente)
 		cliente = clienteRepository.save(cliente);
 		
-		return toResponse(cliente);
+		var resposta = toResponse(cliente);
+		
+		emailMessage.criarEmail(resposta, "Bem-vindo ao ClienteCotiInformatica", MensagemEmail(resposta.getNome()));
+		
+		return resposta;
 		
 	}
 
@@ -52,6 +66,11 @@ public class ClienteServiceImpl implements ClienteServices{
 	public ClienteResponseDto alterarCliente(ClientePutRequestDto request, UUID id) {
 		var cliente = clienteRepository.findById(id).orElseThrow(
 				() -> new IllegalArgumentException("Cliente não encontrado"));
+		
+		//verificando se o cpf já está cadastrado para outro id
+		if (clienteRepository.existsByCpf(request.getCpf(), id)) {
+			throw new IllegalArgumentException("O CPF informado já está cadastrado");
+		}
 		
 		cliente.setNome(request.getNome());
 		cliente.setEmail(request.getEmail());
@@ -93,8 +112,10 @@ public class ClienteServiceImpl implements ClienteServices{
 
 	@Override
 	public ClienteResponseDto buscarClientePorId(UUID id) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		var cliente =  clienteRepository.findById(id).orElseThrow(
+				() -> new IllegalArgumentException("Cliente não encontrado"));
+		return toResponse(cliente);
 	}
 	
 	
@@ -146,6 +167,12 @@ public class ClienteServiceImpl implements ClienteServices{
     private void adicionarEnderecoAoCliente(Cliente cliente, Endereco endereco) {
         endereco.setCliente(cliente); // Vincula o cliente ao endereço
         cliente.setEnderecos(List.of(endereco)); // Adiciona o endereço à lista de endereços do cliente
+    }
+    
+    private String MensagemEmail(String nome) {
+    	
+    	return "Parabéns" + nome + "!, \n Sua conta foi criada com sucesso. Agora você pode acessar todos os recursos do ClienteCotiInformatica.";
+
     }
 	
 }

@@ -49,6 +49,12 @@ public class ClienteController {
 		return clienteServices.buscarTodosClientes();
 	}
 	
+	@GetMapping("/consultar/{id}")
+	public ClienteResponseDto consultarClientePorId(@PathVariable UUID id) {
+
+		return clienteServices.buscarClientePorId(id);
+	}
+	
 	
 	
 }
