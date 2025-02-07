@@ -8,7 +8,8 @@ import lombok.Data;
 public class EmailMessageDto {
 	
 	private UUID id;
-	private ClienteResponseDto cliente;
+	private String email;
+	private String nome;
 	private String assunto;
 	private String mensagem;
 

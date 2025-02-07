@@ -19,6 +19,8 @@ services:
     depends_on:
       - clientes-postgres
       - clientes-rabbitmq
+    networks:
+      - app-network
 
   clientes-postgres:
     image: postgres:15
@@ -31,17 +33,25 @@ services:
       POSTGRES_PASSWORD: coti
     volumes:
       - clientes_postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
 
   clientes-rabbitmq:
     image: rabbitmq:3-management
     container_name: clientes-rabbitmq
     ports:
       - "5672:5672"
-      - "15672:15672" # Porta para gerenciamento
+      - "15672:15672" # Porta de gerenciamento do RabbitMQ
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
       RABBITMQ_DEFAULT_VHOST: /
+    networks:
+      - app-network
 
 volumes:
   clientes_postgres_data:
+
+networks:
+  app-network:
+    external: true
