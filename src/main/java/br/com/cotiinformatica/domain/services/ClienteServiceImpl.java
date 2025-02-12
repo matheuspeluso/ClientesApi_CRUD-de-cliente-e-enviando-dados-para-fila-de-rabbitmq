@@ -171,7 +171,7 @@ public class ClienteServiceImpl implements ClienteServices {
 
 	private String MensagemEmail(String nome) {
 
-		return "Parabéns" + nome
+		return "Parabéns " + nome
 				+ "!, Sua conta foi criada com sucesso. Agora você pode acessar todos os recursos do ClienteCotiInformatica.";
 
 	}
