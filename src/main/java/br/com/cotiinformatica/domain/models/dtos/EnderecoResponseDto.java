@@ -2,9 +2,11 @@ package br.com.cotiinformatica.domain.models.dtos;
 
 import java.util.UUID;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class EnderecoResponseDto {
 
 	private UUID id;

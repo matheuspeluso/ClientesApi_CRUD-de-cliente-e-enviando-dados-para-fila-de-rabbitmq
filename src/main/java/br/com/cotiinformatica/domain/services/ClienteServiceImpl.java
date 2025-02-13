@@ -149,18 +149,16 @@ public class ClienteServiceImpl implements ClienteServices {
 	}
 
 	private EnderecoResponseDto toEnderecoResponse(Endereco endereco) {
-		var response = new EnderecoResponseDto();
-
-		response.setId(endereco.getId());
-		response.setLogradouro(endereco.getLogradouro());
-		response.setComplemento(endereco.getComplemento());
-		response.setNumero(endereco.getNumero());
-		response.setBairro(endereco.getBairro());
-		response.setCidade(endereco.getCidade());
-		response.setUf(endereco.getUf());
-		response.setCep(endereco.getCep());
-
-		return response;
+	    return new EnderecoResponseDto(
+	        endereco.getId(),
+	        endereco.getLogradouro(),
+	        endereco.getNumero(),
+	        endereco.getComplemento(),
+	        endereco.getBairro(),
+	        endereco.getCidade(),
+	        endereco.getUf(),
+	        endereco.getCep()
+	    );
 	}
 
 	// Novo método utilitário para adicionar um endereço ao cliente
