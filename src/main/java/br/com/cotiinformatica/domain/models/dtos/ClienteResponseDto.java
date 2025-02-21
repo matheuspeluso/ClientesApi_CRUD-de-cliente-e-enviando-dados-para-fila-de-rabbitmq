@@ -14,4 +14,5 @@ public class ClienteResponseDto {
 	private String cpf;
 	private String dataNascimento;
 	private List <EnderecoResponseDto> enderecos;
+	private String mensagem;
 }

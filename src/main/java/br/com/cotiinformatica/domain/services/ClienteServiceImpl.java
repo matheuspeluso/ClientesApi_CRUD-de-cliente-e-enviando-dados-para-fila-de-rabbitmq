@@ -53,7 +53,7 @@ public class ClienteServiceImpl implements ClienteServices {
 		// salvando o cliente (os endereços serão salvos juntamente com o cliente)
 		cliente = clienteRepository.save(cliente);
 
-		var resposta = toResponse(cliente);
+		var resposta = toResponse(cliente, "Cliente cadastrado com sucesso!");
 
 		emailMessage.criarEmail(resposta.getEmail(), resposta.getNome(), "Cadastro de Cliente",
 				MensagemEmail(resposta.getNome()));
@@ -79,7 +79,7 @@ public class ClienteServiceImpl implements ClienteServices {
 
 		clienteRepository.save(cliente);
 
-		return toResponse(cliente);
+		return toResponse(cliente, "Cliente atualizado com sucesso!");
 	}
 
 	@Override
@@ -89,7 +89,7 @@ public class ClienteServiceImpl implements ClienteServices {
 				.orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
 
 		clienteRepository.delete(cliente);
-		return toResponse(cliente);
+		return toResponse(cliente, "Cliente excluido com sucesso!");
 	}
 
 	@Override
@@ -104,7 +104,7 @@ public class ClienteServiceImpl implements ClienteServices {
 		List<ClienteResponseDto> resposta = new ArrayList<>();
 
 		for (Cliente cliente : clientes) {
-			resposta.add(toResponse(cliente));
+			resposta.add(toGetResponse(cliente));
 		}
 
 		return resposta;
@@ -115,7 +115,7 @@ public class ClienteServiceImpl implements ClienteServices {
 
 		var cliente = clienteRepository.findById(id)
 				.orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
-		return toResponse(cliente);
+		return toGetResponse(cliente);
 	}
 
 	private Endereco enderecoConvert(ClienteRequestDto dto) { // Método utilitário para converter um DTO de endereço em
@@ -134,7 +134,22 @@ public class ClienteServiceImpl implements ClienteServices {
 		return endereco;
 	}
 
-	private ClienteResponseDto toResponse(Cliente cliente) {
+	private ClienteResponseDto toResponse(Cliente cliente, String mensagem) {
+		var response = new ClienteResponseDto();
+
+		response.setId(cliente.getId());
+		response.setNome(cliente.getNome());
+		response.setCpf(cliente.getCpf());
+		response.setEmail(cliente.getEmail());
+		response.setDataNascimento(cliente.getDataNascimento().toString());
+		response.setMensagem(mensagem);
+		var enderecos = cliente.getEnderecos().stream().map(this::toEnderecoResponse).toList();
+		response.setEnderecos(enderecos);
+
+		return response;
+	}
+
+	private ClienteResponseDto toGetResponse(Cliente cliente) {
 		var response = new ClienteResponseDto();
 
 		response.setId(cliente.getId());
