@@ -4,6 +4,7 @@ Here is a draft for the README file based on the provided information:
 
 # ClientesApi: CRUD de Cliente e Enviando Dados para Fila de RabbitMQ
 
+<img src="./print_API/print api cliente.png"> 
 ## Descrição Sobre o Projeto
 
 Este é o projeto trata-se de um microserviço para realizar operações de CRUD (Create, Read, Update, Delete) de clientes Endereço e enviar dados de cliente para uma fila do RabbitMQ na qual será consumida por uma segunda API [ApiEmailMessage](https://github.com/matheuspeluso/apiEmailMessage-consumindo-fila-RabbitMQ-e-envio-de-email). 
