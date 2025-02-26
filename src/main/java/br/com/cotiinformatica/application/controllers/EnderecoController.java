@@ -49,4 +49,10 @@ public class EnderecoController {
 		return enderecoServices.consultarEnderecosPorIdDoCliente(idCliente);
 	}
 	
+	@GetMapping("/consultar/endereco/{id}")
+	public EnderecoResponseDto consultarEnderecoPorId(@PathVariable UUID id) {
+		
+		return enderecoServices.consultarEnderecoPorId(id);
+	}
+	
 }

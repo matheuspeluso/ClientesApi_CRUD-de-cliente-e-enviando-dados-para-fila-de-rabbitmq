@@ -14,6 +14,9 @@ public interface EnderecoServices {
 	
 	EnderecoResponseDto excluirEndereco(UUID id);
 	
+	EnderecoResponseDto consultarEnderecoPorId(UUID id);
+	
 	List<EnderecoResponseDto> consultarEnderecosPorIdDoCliente(UUID idCliente);
+	
 
 }

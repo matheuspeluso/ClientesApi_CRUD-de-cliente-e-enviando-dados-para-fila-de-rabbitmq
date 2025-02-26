@@ -77,6 +77,14 @@ public class EnderecoServiceImpl implements EnderecoServices{
 
 	
 	@Override
+	public EnderecoResponseDto consultarEnderecoPorId(UUID id) {
+		var endereco = enderecoRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Endereço não encontrado"));
+		
+		return toEnderecoResponse(endereco);
+	}
+	
+	@Override
 	public List<EnderecoResponseDto> consultarEnderecosPorIdDoCliente(UUID idCliente) {
 		
 		var enderecos = enderecoRepository.buscarEnderecosPorCliente(idCliente);
@@ -101,6 +109,5 @@ public class EnderecoServiceImpl implements EnderecoServices{
 	        endereco.getCep()
 	    );
 	}
-
 
 }
