@@ -101,8 +101,8 @@ public class EnderecoServiceImpl implements EnderecoServices{
 	    return new EnderecoResponseDto(
 	        endereco.getId(),
 	        endereco.getLogradouro(),
-	        endereco.getNumero(),
 	        endereco.getComplemento(),
+	        endereco.getNumero(),
 	        endereco.getBairro(),
 	        endereco.getCidade(),
 	        endereco.getUf(),
